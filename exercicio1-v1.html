@@ -31,8 +31,8 @@
 
 					repo.popula_tabela = function(idtabela) {
 						var tabela = $(idtabela);
-						while(tabela.children().length > 1)
-							tabela.children()[1].remove();
+						while(tabela.find("tr").length > 1)
+							tabela.find("tr").last().remove();
 						if(issues != null) {
 							issues.forEach(function(issue) {
 								tabela.append("<tr><td>" + issue.number + "</td><td>" + issue.title + "</td></tr>");
