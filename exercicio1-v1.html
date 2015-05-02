@@ -23,14 +23,10 @@
 
 					repo.busca_issues = function() {
 						issues = null;
-						$.get("https://api.github.com/repos/" + username + "/" + "reponame" + "/issues")
+						return $.get("https://api.github.com/repos/" + username + "/" + reponame + "/issues")
 						.done(function(data) {
-							if(data == null)
-								issues = [];
-							else
-								issues = data;
+							issues = data;
 						});
-						while(issues == null);
 					};
 
 					repo.popula_tabela = function(idtabela) {
@@ -47,9 +43,11 @@
 					return repo;
 				}
 
-				var le_repo = GithubRepo($("#username").val(), $("#reponame").val());
-				le_repo.busca_issues();
-				le_repo.popula_tabela("#issuestable");
+				var le_repo = GithubRepo($("#user").val(), $("#reponame").val());
+				le_repo.busca_issues()
+				.done(function() {
+                    			le_repo.popula_tabela("#issuestable");
+                		});
 			}		
 		</script>
 	</body>
