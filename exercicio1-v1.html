@@ -8,17 +8,17 @@
 		<input type="text" id="user" />
 		Repositório:
 		<input type="text" id="reponame" />
-		<button onclick="vaibuscarassissues">Vai buscar as issues</button>
+		<button onclick="vaibuscarasissues">Vai buscar as issues</button>
 		<table id="issuestable">
 			<tr>
 				<th>Número</th>
 				<th>Título</th>
 			</tr>
 		</table>
-		<script>
+		<script>			
 			function vaibuscarasissues() {
 				function GithubRepo(username, reponame) {					
-					var repo;
+					var repo = {};
 					var issues = null;
 
 					repo.busca_issues = function() {
@@ -30,7 +30,7 @@
 							else
 								issues = data;
 						});
-						while(issues.length == null);
+						while(issues == null);
 					};
 
 					repo.popula_tabela = function(idtabela) {
@@ -47,10 +47,10 @@
 					return repo;
 				}
 
-				var le_repo = githubRepo($("#username").val(), $("#reponame").val());
+				var le_repo = GithubRepo($("#username").val(), $("#reponame").val());
 				le_repo.busca_issues();
 				le_repo.popula_tabela("#issuestable");
-			}
+			}		
 		</script>
 	</body>
 </html>
