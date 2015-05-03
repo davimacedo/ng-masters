@@ -26,10 +26,19 @@
 				GithubRepo.prototype.busca_issues = function() {
 					var repo = this;
 					repo.issues = null;
-					return $.get("https://api.github.com/repos/" + this.username + "/" + this.reponame + "/issues")
+					var promessas = {};
+					promessas.callbacks = [];
+					promessas.done = function(callback) {
+						promessas.callbacks.push(callback);
+					};
+					$.get("https://api.github.com/repos/" + this.username + "/" + this.reponame + "/issues")
 					.done(function(data) {
 						repo.issues = data;
+						promessas.callbacks.forEach(function(callback) {
+							callback();
+						});
 					});
+					return promessas;
 				};
 
 				GithubRepo.prototype.popula_tabela = function(idtabela) {
