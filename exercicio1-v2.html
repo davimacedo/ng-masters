@@ -15,7 +15,7 @@
 				<th>Título</th>
 			</tr>
 		</table>
-		<script>			
+		<script>
 			function vaibuscarasissues() {
 				function GithubRepo(username, reponame) {
 					this.username = username;
@@ -24,10 +24,11 @@
 				}
 
 				GithubRepo.prototype.busca_issues = function() {
-					this.issues = null;
+					var repo = this;
+					repo.issues = null;
 					return $.get("https://api.github.com/repos/" + this.username + "/" + this.reponame + "/issues")
 					.done(function(data) {
-						this.issues = data;
+						repo.issues = data;
 					});
 				};
 
@@ -48,7 +49,7 @@
 				.done(function() {
                     			le_repo.popula_tabela("#issuestable");
                 		});
-			}		
+			}			
 		</script>
 	</body>
 </html>
