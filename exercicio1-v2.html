@@ -1,0 +1,54 @@
+<html>
+	<head>
+		<title>ng-masters - Exercício 1 - V2</title>
+		<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+	</head>
+	<body>
+		Usuário:
+		<input type="text" id="user" />
+		Repositório:
+		<input type="text" id="reponame" />
+		<button onclick="vaibuscarasissues();">Vai buscar as issues</button>
+		<table id="issuestable">
+			<tr>
+				<th>Número</th>
+				<th>Título</th>
+			</tr>
+		</table>
+		<script>			
+			function vaibuscarasissues() {
+				function GithubRepo(username, reponame) {
+					this.username = username;
+					this.reponame = reponame;					
+					this.issues = null;
+				}
+
+				GithubRepo.prototype.busca_issues = function() {
+					this.issues = null;
+					return $.get("https://api.github.com/repos/" + this.username + "/" + this.reponame + "/issues")
+					.done(function(data) {
+						this.issues = data;
+					});
+				};
+
+				GithubRepo.prototype.popula_tabela = function(idtabela) {
+					var tabela = $(idtabela);
+					while(tabela.find("tr").length > 1)
+						tabela.find("tr").last().remove();
+					if(this.issues != null) {
+						this.issues.forEach(function(issue) {
+							tabela.append("<tr><td>" + issue.number + "</td><td>" + issue.title + "</td></tr>");
+						});
+					}
+				};
+
+
+				var le_repo = new GithubRepo($("#user").val(), $("#reponame").val());
+				le_repo.busca_issues()
+				.done(function() {
+                    			le_repo.popula_tabela("#issuestable");
+                		});
+			}		
+		</script>
+	</body>
+</html>
